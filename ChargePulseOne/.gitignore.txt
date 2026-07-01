@@ -1,0 +1,33 @@
+# Qt 全部子项目IDE配置
+.qtcreator/
+*.user
+*.user.*
+
+# CMake编译目录
+build/
+build-android/
+cmake-build-*/
+
+# CMake缓存
+CMakeCache.txt
+CMakeFiles/
+*.cmake
+
+# 编译产物
+*.exe
+*.dll
+*.so
+*.a
+*.o
+
+# 压缩包、安装包
+*.zip
+*.tar.gz
+*.rar
+
+# 上传临时文件夹
+.uploads/
+
+# IDE缓存
+.code-model
+.caches-v2
