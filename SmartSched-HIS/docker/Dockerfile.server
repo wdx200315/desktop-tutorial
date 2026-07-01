@@ -1,0 +1,44 @@
+# SmartSched Dockerfile - Server
+FROM ubuntu:22.04
+
+LABEL maintainer="support@smartsched.example.com"
+LABEL version="1.0.0"
+
+# 设置环境变量
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Shanghai
+
+# 安装依赖
+RUN apt-get update && apt-get install -y \
+    mysql-client \
+    libssl3 \
+    libstdc++6 \
+    && rm -rf /var/lib/apt/lists/*
+
+# 创建用户
+RUN useradd -m -s /bin/bash smartsched
+
+# 创建目录
+RUN mkdir -p /var/log/smartsched /etc/smartsched
+RUN chown -R smartsched:smartsched /var/log/smartsched
+
+# 复制可执行文件和配置
+COPY bin/smartsched-server /opt/smartsched/bin/
+COPY config/server.json /etc/smartsched/server.json
+
+RUN chown -R smartsched:smartsched /opt/smartsched
+
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD nc -z localhost 8888 || exit 1
+
+# 切换用户
+USER smartsched
+
+# 暴露端口
+EXPOSE 8888 8889
+
+# 启动命令
+WORKDIR /opt/smartsched
+ENTRYPOINT ["/opt/smartsched/bin/smartsched-server"]
+CMD ["--config", "/etc/smartsched/server.json"]

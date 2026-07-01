@@ -1,0 +1,64 @@
+/build/
+/.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 编译产物
+bin/
+lib/
+*.o
+*.obj
+*.a
+*.lib
+*.dll
+*.exe
+
+# Qt特定
+*.moc
+*.qrc*
+*.qmlc
+*.jsc
+Makefile*
+*.pro.user
+
+# 日志
+logs/
+*.log
+
+# IDE
+.idea/
+*.sln
+*.vcxproj*
+
+# 测试覆盖率
+coverage/
+*.gcov
+*.gcda
+*.gcno
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+compile_commands.json
+
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# Node
+node_modules/
+
+# 数据库
+*.db
+*.sqlite
+
+# 配置（敏感）
+config.local.ini
+*.local.ini
+.env

@@ -1,0 +1,44 @@
+# SmartSched Dockerfile - Client
+FROM ubuntu:22.04
+
+LABEL maintainer="support@smartsched.example.com"
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Shanghai
+
+# 安装运行时依赖
+RUN apt-get update && apt-get install -y \
+    libssl3 \
+    libstdc++6 \
+    libgl1 \
+    libxkbcommon0 \
+    libxcb-icccm4 \
+    libxcb-image0 \
+    libxcb-keysyms1 \
+    libxcb-randr0 \
+    libxcb-render-util0 \
+    libxcb-xinerama0 \
+    libxcb-cursor0 \
+    libxcb-shape0 \
+    fonts-wqy-microhei \
+    && rm -rf /var/lib/apt/lists/*
+
+# 创建非root用户
+RUN useradd -m -s /bin/bash smartsched
+
+# 复制客户端应用
+COPY bin/smartsched-patient /opt/smartsched/bin/
+COPY bin/smartsched-doctor /opt/smartsched/bin/
+COPY bin/smartsched-display /opt/smartsched/bin/
+COPY bin/smartsched-admin /opt/smartsched/bin/
+
+# 默认配置
+COPY config/client.json /etc/smartsched/client.json
+
+RUN chown -R smartsched:smartsched /opt/smartsched
+
+USER smartsched
+
+# 默认启动看板
+WORKDIR /opt/smartsched
+CMD ["/opt/smartsched/bin/smartsched-display"]
